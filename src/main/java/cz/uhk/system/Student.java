@@ -1,6 +1,5 @@
 package cz.uhk.system;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Student {
@@ -42,7 +41,7 @@ public class Student {
         this.grades = grades;
     }
 
-    public boolean getOnContract() {
+    public boolean isOnContract() {
         return onContract;
     }
 
@@ -56,31 +55,28 @@ public class Student {
         }
         return avarage;
     }
-
-    public void setAvarage(float avarage) {
-        this.avarage = avarage;
+    protected void countAvarage() {
+        float sum = 0;
+        for ( int grade: this.grades
+        ) {
+            sum += grade;
+        }
+        this.avarage = sum / this.grades.size();
     }
 
     public static int getStudentCount() {
         return studentCount;
     }
 
-    protected void countAvarage() {
-        float sum = 0;
-        for ( int grade: this.grades
-             ) {
-                sum += grade;
-        }
-        this.avarage = sum / this.grades.size();
-    }
-    public static void main(String[] args) {
-        System.out.println("hey");
-        ArrayList<Integer> grades = new ArrayList<Integer>();
-        grades.add(1); grades.add(2); grades.add(3);
-        Student st1 = new Student("angie", grades, false);
-        Student st2 = new Student(st1);
-        System.out.println(st2.getName());
-        System.out.println(st1.getAvarage());
-        System.out.println(Student.getStudentCount());
-    }
+
+//    public static void main(String[] args) {
+//        System.out.println("hey");
+//        ArrayList<Integer> grades = new ArrayList<Integer>();
+//        grades.add(1); grades.add(2); grades.add(3);
+//        Student st1 = new Student("angie", grades, false);
+//        Student st2 = new Student(st1);
+//        System.out.println(st2.getName());
+//        System.out.println(st1.getAvarage());
+//        System.out.println(Student.getStudentCount());
+//    }
 }
