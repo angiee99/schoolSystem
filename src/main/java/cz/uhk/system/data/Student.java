@@ -1,4 +1,4 @@
-package cz.uhk.system;
+package cz.uhk.system.data;
 
 import java.util.ArrayList;
 
