@@ -1,10 +1,11 @@
 package cz.uhk.system;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Student {
     private String name;
-    private int[] grades;
+    private ArrayList<Integer> grades;
     private boolean onContract;
     private float avarage;
     static private int studentCount;
@@ -12,18 +13,18 @@ public class Student {
     public Student(){
         studentCount+=1;
     }
-    public Student(String name, int[] grades, boolean onContract) {
+    public Student(String name, ArrayList<Integer> grades, boolean onContract) {
         this.name = name;
         this.grades = grades;
         this.onContract = onContract;
         studentCount+=1;
     }
-    public Student(Student another){
+    public Student(Student another) {
         this.name = another.name;
         this.grades = another.grades;
         this.onContract = another.onContract;
         this.avarage = another.avarage;
-        studentCount+=1;
+        studentCount += 1;
     }
     public String getName() {
         return name;
@@ -33,11 +34,11 @@ public class Student {
         this.name = name;
     }
 
-    public int[] getGrades() {
+    public ArrayList<Integer> getGrades() {
         return grades;
     }
 
-    public void setGrades(int[] grades) {
+    public void setGrades(ArrayList<Integer> grades) {
         this.grades = grades;
     }
 
@@ -70,11 +71,13 @@ public class Student {
              ) {
                 sum += grade;
         }
-        this.avarage = sum / this.grades.length;
+        this.avarage = sum / this.grades.size();
     }
     public static void main(String[] args) {
         System.out.println("hey");
-        Student st1 = new Student("angie", new int[]{1, 2, 4}, false);
+        ArrayList<Integer> grades = new ArrayList<Integer>();
+        grades.add(1); grades.add(2); grades.add(3);
+        Student st1 = new Student("angie", grades, false);
         Student st2 = new Student(st1);
         System.out.println(st2.getName());
         System.out.println(st1.getAvarage());
