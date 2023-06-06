@@ -18,12 +18,14 @@ public class Main {
             String fileName = "students/1.csv";
 
             // Call the read method to read student data from the CSV file
-            List<Student> students = fileManager.read(fileName);
+            StudentList students = fileManager.read(fileName);
+            students.createRating(40);
+            fileManager.write("students/rating1.csv", students);
 
-            // Print the student data
-            for (Student student : students) {
-                System.out.println(student.getName());
-            }
+//            // Print the student data
+//            for (Student student : students) {
+//                System.out.println(student.getName());
+//            }
         } catch (IOException e) {
             // Handle any IO exceptions that may occur
             e.printStackTrace();

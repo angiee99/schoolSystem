@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="02ad4d47-3ccc-4fea-801c-f755d3b49c76" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cz/uhk/system/StudentList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cz/uhk/system/StudentList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cz/uhk/system/data/StudentList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cz/uhk/system/data/StudentList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cz/uhk/system/fileModule/CSVManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cz/uhk/system/fileModule/CSVManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cz/uhk/system/fileModule/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cz/uhk/system/fileModule/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cz/uhk/system/gui/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cz/uhk/system/gui/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +19,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -40,13 +44,26 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.StudentList">
-    <configuration name="Student" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cz.uhk.system.Student" />
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cz.uhk.system.gui.Main" />
       <module name="Project" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cz.uhk.system.*" />
+          <option name="PATTERN" value="cz.uhk.system.gui.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Student" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cz.uhk.system.data.Student" />
+      <module name="Project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cz.uhk.system.data.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -55,11 +72,11 @@
       </method>
     </configuration>
     <configuration name="StudentList" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cz.uhk.system.StudentList" />
+      <option name="MAIN_CLASS_NAME" value="cz.uhk.system.data.StudentList" />
       <module name="Project" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cz.uhk.system.*" />
+          <option name="PATTERN" value="cz.uhk.system.data.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -69,6 +86,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.StudentList" />
         <item itemvalue="Application.Student" />
       </list>

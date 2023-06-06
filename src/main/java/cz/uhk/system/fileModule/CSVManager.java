@@ -1,15 +1,14 @@
 package cz.uhk.system.fileModule;
 
 import cz.uhk.system.data.Student;
+import cz.uhk.system.data.StudentList;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSVManager implements FileManager{
-
+    //create student not in CSV Manager!!
     private Student createStudent(List<String> data) {
         if (data.get(0).isEmpty() || data.get(0).trim().isEmpty()) {
             String msg = "The first record in a table row (here: " + data.get(0) +
@@ -47,8 +46,8 @@ public class CSVManager implements FileManager{
     }
 
     @Override
-    public List<Student> read(String fname) throws IOException {
-        List<Student> result = new ArrayList<>();
+    public StudentList read(String fname) throws IOException {
+        StudentList result = new StudentList();
 
         try (BufferedReader br = new BufferedReader(new FileReader(fname))) {
             String line = br.readLine();
@@ -83,7 +82,15 @@ public class CSVManager implements FileManager{
     }
 
     @Override
-    public void write(String fname, List<Student> seznam) throws IOException {
-
+    public void write(String fname, StudentList list) throws IOException {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fname))) {
+                for (int i = 0; i < list.getScholarshipStCount(); i++) {
+                    writer.write(list.getStudentList().get(i).getName() + ","
+                            + String.format("%.3f", list.getStudentList().get(i).getAvarage()));
+                    writer.newLine();
+                }
+            } catch (IOException e) {
+                throw new IOException("Failed to open output file: " + fname, e);
+            }
+        }
     }
-}

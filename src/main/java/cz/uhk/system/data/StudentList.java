@@ -126,23 +126,23 @@ public class StudentList {
     }
 
 
-    public static void main(String[] args) {
-        ArrayList<Integer> grades = new ArrayList<Integer>();
-        grades.add(1); grades.add(1); grades.add(1);
-        Student st1 = new Student("angie", grades, false);
-        Student st2 = new Student(st1);
-        ArrayList<Integer> grades1 = new ArrayList<Integer>();
-        grades1.add(4); grades1.add(5); grades.add(6);
-        Student st3 = new Student("dani", grades1, false);
-        Student st4 = new Student("lee", grades1, true);
-
-        StudentList list = new StudentList();
-        list.add(st1); list.add(st2);  list.add(st3);  list.add(st4);
-
-        list.print();
-        list.sort();
-        list.createRating(50);
-        System.out.println(list.getBudgetStCount());
-        System.out.println(list.getScholarshipStCount());
-    }
+//    public static void main(String[] args) {
+//        ArrayList<Integer> grades = new ArrayList<Integer>();
+//        grades.add(1); grades.add(1); grades.add(1);
+//        Student st1 = new Student("angie", grades, false);
+//        Student st2 = new Student(st1);
+//        ArrayList<Integer> grades1 = new ArrayList<Integer>();
+//        grades1.add(4); grades1.add(5); grades.add(6);
+//        Student st3 = new Student("dani", grades1, false);
+//        Student st4 = new Student("lee", grades1, true);
+//
+//        StudentList list = new StudentList();
+//        list.add(st1); list.add(st2);  list.add(st3);  list.add(st4);
+//
+//        list.print();
+//        list.sort();
+//        list.createRating(50);
+//        System.out.println(list.getBudgetStCount());
+//        System.out.println(list.getScholarshipStCount());
+//    }
 }
