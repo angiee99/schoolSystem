@@ -19,7 +19,7 @@ public class MainWindow extends JFrame {
     private StudentList originalStudents = new StudentList();
     private StudentTableModel model = new StudentTableModel();
     private JTable table;
-    private JButton btDelete = new JButton();
+    private JButton btDelete = new JButton("Delete");
     private JButton btAdd = new JButton("Add");
     private JButton btSort = new JButton("Sort");
     private JButton btSearch = new JButton("Search");
@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
         rightPanel.setLayout(new BorderLayout());
 
 
-// Insert student fields
+// Insert student fields -> mb this to popup window
         JPanel formPanel = new JPanel(new GridLayout(4, 2, 3, 1));
         formPanel.setBorder(BorderFactory.createTitledBorder("New student"));
         formPanel.add(new JLabel("Name"));
@@ -62,7 +62,7 @@ public class MainWindow extends JFrame {
         formPanel.add(tfName);
 
         formPanel.add(new JLabel("Grades"));
-        tfGrades = new JTextField("1, 2, 3, ..", 10);
+        tfGrades = new JTextField("1, 2, 3", 10);
         formPanel.add(tfGrades);
 
         onContractCheckBox = new JCheckBox("On Contract");
@@ -110,14 +110,31 @@ public class MainWindow extends JFrame {
         buttonPanel.setBorder(BorderFactory.createTitledBorder("Actions"));
 
 // sort
+        buttonPanel.add(btDelete);
+        btDelete.addActionListener((e)->
+                model.deleteStudent(table.getSelectedRow()));
+
         buttonPanel.add(btSort);
         btSort.addActionListener((e) -> {
             students.sort();
             model.fireTableDataChanged();
         });
 
-// read from file
+// read from file button
         buttonPanel.add(btReadFromFile);
+        btReadFromFile.addActionListener((e) -> {
+            String fileName = JOptionPane.showInputDialog(this, "Enter the file name:");
+            if (fileName != null && !fileName.isEmpty()) {
+                try {
+                    readFile(fileName);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to read file: " + fileName,
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+
 
 // write to file
         buttonPanel.add(btWriteToFile);
@@ -125,6 +142,21 @@ public class MainWindow extends JFrame {
         rightPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         add(rightPanel, BorderLayout.EAST);
+    }
+
+// read file mwthod
+    private void readFile(String fileName) throws IOException {
+        FileManager fileManager = new CSVManager();
+        StudentList newStudents = fileManager.read(fileName);
+        if (newStudents != null) {
+            students = newStudents;
+            model.setStudents(students);
+            JOptionPane.showMessageDialog(this, "File successfully read: " + fileName,
+                    "Read File", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to read file: " + fileName,
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     private void searchStudents(String searchText) {
         List<Student> searchResults = students.search(searchText);
