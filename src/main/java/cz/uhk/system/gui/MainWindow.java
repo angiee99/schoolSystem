@@ -8,20 +8,24 @@ import cz.uhk.system.fileModule.FileManager;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainWindow extends JFrame {
     private StudentList students = new StudentList();
     private StudentTableModel model = new StudentTableModel();
     private JTable table;
     private JButton btDelete = new JButton();
-    JTextField tfName;
-    JTextField tfGrades;
-    JCheckBox onContractCheckBox;
+    private JButton btInsert = new JButton("Insert Student");
+    private JButton btSort = new JButton("Sort");
+    private JButton btSearch = new JButton("Search");
+    private JButton btReadFromFile = new JButton("Read from File");
+    private JButton btWriteToFile = new JButton("Write to File");
+    private JTextField tfName;
+    private JTextField tfGrades;
+    private JCheckBox onContractCheckBox;
+    private JTextField tfSearch;
+
 
 
     public MainWindow() {
@@ -33,16 +37,17 @@ public class MainWindow extends JFrame {
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
-        createSouthPanel();
+        createRightPanel();
 
         setSize(860, 640);
         setVisible(true);
     }
 
-    private void createSouthPanel() {
+    private void createRightPanel() {
         JPanel southPanel = new JPanel();
+        southPanel.setLayout(new BorderLayout());
 //        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+//        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 //delete bt
         btDelete = new JButton("Delete Student");
         btDelete.addActionListener((e) ->
@@ -50,7 +55,8 @@ public class MainWindow extends JFrame {
 
         southPanel.add(btDelete);
 // delete bt
-        JPanel formPanel = new JPanel();
+//        JPanel formPanel = new JPanel();
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 5, 5));
         formPanel.setBorder(BorderFactory.createTitledBorder("New student"));
 //        formPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         formPanel.add(new JLabel("Name"));
@@ -69,15 +75,17 @@ public class MainWindow extends JFrame {
 //        southPanel.add(tfCena);
 
         JButton btAdd = new JButton("Add");
-        formPanel.add(btAdd);
+        formPanel.add(btAdd, BorderLayout.SOUTH);
         btAdd.addActionListener((e) -> {
             addStudent();
         });
 
-        southPanel.add(formPanel, BorderLayout.WEST);
-        add(southPanel, BorderLayout.SOUTH);
+        southPanel.add(formPanel, BorderLayout.NORTH);
+        add(southPanel, BorderLayout.EAST);
 
     }
+
+
 
     private void addStudent() {
 
