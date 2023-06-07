@@ -80,9 +80,34 @@ public class CSVManager implements FileManager{
 
         return result;
     }
-
     @Override
     public void write(String fname, StudentList list) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fname))) {
+            writer.write(String.valueOf(list.getSize()));
+            System.out.println(list.getSize());
+            writer.newLine();
+
+            for (int i = 0; i < list.getSize(); i++) {
+                Student st = list.getStudent(i);
+
+                // turn grades into a string
+                String gradesString = new String();
+                for (int j = 0; j < st.getGrades().size(); j++){
+                    gradesString += st.getGrades().get(j) + ",";
+                }
+
+                writer.write(st.getName() + ","
+                        + gradesString // GRADES are written in []
+                        + st.isOnContract());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new IOException("Failed to open output file: " + fname, e);
+        }
+    }
+
+
+    public void writeRating(String fname, StudentList list) throws IOException {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fname))) {
                 for (int i = 0; i < list.getScholarshipStCount(); i++) {
                     writer.write(list.getStudentList().get(i).getName() + ","

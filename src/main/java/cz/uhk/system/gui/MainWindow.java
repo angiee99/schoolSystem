@@ -138,12 +138,28 @@ public class MainWindow extends JFrame {
 
 // write to file
         buttonPanel.add(btWriteToFile);
+        btWriteToFile.addActionListener((e) -> {
+            String fileName = JOptionPane.showInputDialog(this, "Enter the file name:");
+            if (fileName != null && !fileName.isEmpty()) {
+                try {
+                    writeFile(fileName);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to write to file: " + fileName,
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         rightPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         add(rightPanel, BorderLayout.EAST);
     }
-
+    private void writeFile(String fileName) throws IOException {
+        FileManager fileManager = new CSVManager();
+        fileManager.write(fileName, students);
+        JOptionPane.showMessageDialog(this, "File successfully written: " + fileName,
+                "Write File", JOptionPane.INFORMATION_MESSAGE);
+    }
 // read file mwthod
     private void readFile(String fileName) throws IOException {
         FileManager fileManager = new CSVManager();
