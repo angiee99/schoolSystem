@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
         rightPanel.setLayout(new BorderLayout());
 
 
-        // Insert student fields
+// Insert student fields
         JPanel formPanel = new JPanel(new GridLayout(4, 2, 3, 1));
         formPanel.setBorder(BorderFactory.createTitledBorder("New student"));
         formPanel.add(new JLabel("Name"));
@@ -62,24 +62,23 @@ public class MainWindow extends JFrame {
         formPanel.add(tfName);
 
         formPanel.add(new JLabel("Grades"));
-        tfGrades = new JTextField("0", 10);
+        tfGrades = new JTextField("1, 2, 3, ..", 10);
         formPanel.add(tfGrades);
 
         onContractCheckBox = new JCheckBox("On Contract");
         formPanel.add(onContractCheckBox);
 
-        JButton btAdd = new JButton("Add");
         formPanel.add(btAdd);
         btAdd.addActionListener((e) -> addStudent());
 
         rightPanel.add(formPanel, BorderLayout.NORTH);
 
-        // Search field
+// Search field
         JPanel searchPanel = new JPanel(new FlowLayout());
         searchPanel.setBorder(BorderFactory.createTitledBorder("Search"));
         tfSearch = new JTextField(15);
 
-        // Add DocumentListener to the search field
+    // Add DocumentListener to the search field
         tfSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -97,7 +96,7 @@ public class MainWindow extends JFrame {
             }
         });
 
-        // search button
+    // search panel
         searchPanel.add(tfSearch);
         searchPanel.add(btSearch);
         btSearch.addActionListener((e) -> {
@@ -106,19 +105,21 @@ public class MainWindow extends JFrame {
         });
 
         rightPanel.add(searchPanel, FlowLayout.CENTER);
-
-        // Button panel
+// Button panel
         JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createTitledBorder("Actions"));
 
-//        JButton btSort = new JButton("Sort");
+// sort
         buttonPanel.add(btSort);
+        btSort.addActionListener((e) -> {
+            students.sort();
+            model.fireTableDataChanged();
+        });
 
-
-//        JButton btReadFromFile = new JButton("Read from File");
+// read from file
         buttonPanel.add(btReadFromFile);
 
-//        JButton btWriteToFile = new JButton("Write to File");
+// write to file
         buttonPanel.add(btWriteToFile);
 
         rightPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -140,10 +141,7 @@ public class MainWindow extends JFrame {
     }
     private void showTable() {
         model.setStudents(originalStudents); // Reset the table to display all students
-
-
     }
-
 
     private void addStudent() {
 
