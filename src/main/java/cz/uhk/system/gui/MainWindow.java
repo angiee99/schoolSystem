@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainWindow extends JFrame {
-    private StudentList studentList = new StudentList();
+    private StudentList students = new StudentList();
     private StudentTableModel model = new StudentTableModel();
     private JTable table;
     private JButton btDelete = new JButton();
@@ -43,7 +43,7 @@ public class MainWindow extends JFrame {
     public void initData() {
         FileManager fileManager = new CSVManager();
         try {
-            List<Student> students = fileManager.read("students/1.csv");
+            students = fileManager.read("students/1.csv");
             model.setStudents(students);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Failed to read student data from file.",
@@ -52,16 +52,32 @@ public class MainWindow extends JFrame {
     }
 
     private class StudentTableModel extends AbstractTableModel {
-        private List<Student> students;
+//        private List<Student> students;
         private String[] columnNames = {"Name", "Grades", "On Contract", "Average"};
 
-        public StudentTableModel() {
-            students = new ArrayList<>();
-        }
+//        public StudentTableModel() {
+//            students = new ArrayList<>();
+//        }
 
-        public void setStudents(List<Student> students) {
-            this.students = students;
-            fireTableDataChanged();
+//        public void setStudents(List<Student> students) {
+//            this.students = students;
+//            fireTableDataChanged();
+//        }
+        public void setStudents(StudentList studentList) {
+           students = studentList;
+           fireTableDataChanged();
+        }
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+            Student s = students.getStudent(rowIndex);
+            if (columnIndex == 0) { //checkbox
+                s.setName((String) aValue);
+            } else if (columnIndex == 1) {
+                s.setGrades((ArrayList<Integer>) aValue);
+                fireTableCellUpdated(rowIndex,3);
+            } else if (columnIndex == 2) {
+                s.setOnContract((Boolean) aValue);
+            }
         }
 
         public void deleteStudent(int rowIndex) {
@@ -71,7 +87,7 @@ public class MainWindow extends JFrame {
 
         @Override
         public int getRowCount() {
-            return students.size();
+            return students.getSize();
         }
 
         @Override
@@ -83,10 +99,14 @@ public class MainWindow extends JFrame {
         public String getColumnName(int columnIndex) {
             return columnNames[columnIndex];
         }
-
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            // change indexes
+            return columnIndex == 0 || columnIndex == 2;
+        }
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-            Student student = students.get(rowIndex);
+            Student student = students.getStudent(rowIndex);
             switch (columnIndex) {
                 case 0:
                     return student.getName();
@@ -100,6 +120,18 @@ public class MainWindow extends JFrame {
                     return null;
             }
         }
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            switch (columnIndex) {
+                case 0: return String.class;
+                case 1: return ArrayList.class;
+                case 2: return Boolean.class;
+                case 3: return Double.class;
+            }
+            return super.getColumnClass(columnIndex);
+        }
+
+
     }
 
     public static void main(String[] args) {

@@ -32,7 +32,6 @@ public class StudentList {
 //    public void setStudentList(List<Student> studentList) {
 //        this.studentList = studentList;
 //    }
-
     public void sort(){
         if(!isSorted){
             for (int i = 0; i < size; i++){
@@ -94,6 +93,10 @@ public class StudentList {
         this.studentList.remove(index);
         this.size--;
     }
+    public Student getStudent(int index){
+        return  this.studentList.get(index);
+    }
+
     public void print(){
         for (int i = 0; i < this.size; i++) {
             System.out.println(this.studentList.get(i).getName());

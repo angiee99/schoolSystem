@@ -46,8 +46,8 @@ public class CSVManager implements FileManager{
     }
 
     @Override
-    public List<Student> read(String fname) throws IOException {
-        List<Student>result = new ArrayList<>();
+    public StudentList read(String fname) throws IOException {
+        StudentList result = new StudentList();
 
         try (BufferedReader br = new BufferedReader(new FileReader(fname))) {
             String line = br.readLine();

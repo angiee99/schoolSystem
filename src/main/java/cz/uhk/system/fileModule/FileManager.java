@@ -7,6 +7,6 @@ import java.io.IOException;
 import java.util.List;
 
 public interface FileManager {
-    List<Student> read(String fname) throws IOException;
+    StudentList read(String fname) throws IOException;
     void write(String fname, StudentList seznam) throws IOException;
 }
