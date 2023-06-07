@@ -17,42 +17,29 @@ import java.util.List;
 public class MainWindow extends JFrame {
     private StudentList studentList = new StudentList();
     private StudentTableModel model = new StudentTableModel();
-    private JTable table  = new JTable(model);
-    private JButton deleteButton = new JButton();
+    private JTable table;
+    private JButton btDelete = new JButton();
 
     public MainWindow() {
-        super("School Sysytem");
+        super("School System");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         initData();
 
-//
-//        vytvorNabidka(); -> top bar menu
-//        createLeftPanel();
-//        add(new JScrollPane(tabulka), BorderLayout.CENTER);
-//        tabulka.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-//        model = new StudentTableModel();
-//        table = new JTable(model);
+        table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
+// create down panel
+        btDelete = new JButton("Delete Student");
+        btDelete.addActionListener((e)->
+                model.deleteStudent(table.getSelectedRow()));
 
-
-        deleteButton = new JButton("Delete Student");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    model.deleteStudent(selectedRow);
-                }
-            }
-        });
-        add(deleteButton, BorderLayout.SOUTH);
+        add(btDelete, BorderLayout.SOUTH);
+// create down panel
         setSize(860, 640);
-        //pack();
         setVisible(true);
     }
+
     public void initData() {
         FileManager fileManager = new CSVManager();
         try {
@@ -117,17 +104,9 @@ public class MainWindow extends JFrame {
 
     public static void main(String[] args) {
         MainWindow window = new MainWindow();
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                MainWindow mainWindow = new MainWindow();
-//                mainWindow.initData();
-//                mainWindow.setVisible(true);
-//            }
-//        });
     }
-
-
-
-
 }
+
+
+
+
