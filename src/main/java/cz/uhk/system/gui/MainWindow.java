@@ -19,6 +19,10 @@ public class MainWindow extends JFrame {
     private StudentTableModel model = new StudentTableModel();
     private JTable table;
     private JButton btDelete = new JButton();
+    JTextField tfName;
+    JTextField tfGrades;
+    JCheckBox onContractCheckBox;
+
 
     public MainWindow() {
         super("School System");
@@ -29,15 +33,72 @@ public class MainWindow extends JFrame {
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
-// create down panel
-        btDelete = new JButton("Delete Student");
-        btDelete.addActionListener((e)->
-                model.deleteStudent(table.getSelectedRow()));
+        createSouthPanel();
 
-        add(btDelete, BorderLayout.SOUTH);
-// create down panel
         setSize(860, 640);
         setVisible(true);
+    }
+
+    private void createSouthPanel() {
+        JPanel southPanel = new JPanel();
+//        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+//delete bt
+        btDelete = new JButton("Delete Student");
+        btDelete.addActionListener((e) ->
+                model.deleteStudent(table.getSelectedRow()));
+
+        southPanel.add(btDelete);
+// delete bt
+        JPanel formPanel = new JPanel();
+        formPanel.setBorder(BorderFactory.createTitledBorder("New student"));
+//        formPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        formPanel.add(new JLabel("Name"));
+        tfName = new JTextField(15);
+        formPanel.add(tfName);
+
+        formPanel.add(new JLabel("Grades"));
+        tfGrades = new JTextField("0", 10);
+        formPanel.add(tfGrades);
+
+        onContractCheckBox = new JCheckBox("On Contract");
+        formPanel.add(onContractCheckBox);
+
+//        southPanel.add(new JLabel("On Contract"));
+//        tfCena = new JTextField("0", 10);
+//        southPanel.add(tfCena);
+
+        JButton btAdd = new JButton("Add");
+        formPanel.add(btAdd);
+        btAdd.addActionListener((e) -> {
+            addStudent();
+        });
+
+        southPanel.add(formPanel, BorderLayout.WEST);
+        add(southPanel, BorderLayout.SOUTH);
+
+    }
+
+    private void addStudent() {
+
+        String gradesText = tfGrades.getText();
+        boolean onContract = onContractCheckBox.isSelected();
+        // Convert gradesText to ArrayList<Integer>
+        ArrayList<Integer> grades = new ArrayList<>();
+        String[] gradesArray = gradesText.split(",");
+        for (String grade : gradesArray) {
+            grades.add(Integer.parseInt(grade.trim()));
+        }
+
+        Student st = new Student(tfName.getText(), grades,onContract);
+        students.add(st);
+        model.fireTableDataChanged();
+
+        // Clear text fields
+        tfName.setText("");
+        tfGrades.setText("");
+        onContractCheckBox.setSelected(false);
+
     }
 
     public void initData() {
@@ -55,14 +116,6 @@ public class MainWindow extends JFrame {
 //        private List<Student> students;
         private String[] columnNames = {"Name", "Grades", "On Contract", "Average"};
 
-//        public StudentTableModel() {
-//            students = new ArrayList<>();
-//        }
-
-//        public void setStudents(List<Student> students) {
-//            this.students = students;
-//            fireTableDataChanged();
-//        }
         public void setStudents(StudentList studentList) {
            students = studentList;
            fireTableDataChanged();
