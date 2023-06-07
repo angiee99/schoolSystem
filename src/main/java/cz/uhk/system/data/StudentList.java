@@ -128,6 +128,43 @@ public class StudentList {
         return isSorted;
     }
 
+    public List<Student> search(String searchText) {
+        List<Student> searchResults = new ArrayList<>();
+
+        for (Student student : studentList) {
+            if (studentContainsText(student, searchText)) {
+                searchResults.add(student);
+            }
+        }
+
+        return searchResults;
+    }
+
+    private boolean studentContainsText(Student student, String searchText) {
+        String lowercaseSearchText = searchText.toLowerCase();
+
+        if (student.getName().toLowerCase().contains(lowercaseSearchText)) {
+            return true;
+        }
+
+        for (Integer grade : student.getGrades()) {
+            if (grade.toString().contains(searchText)) {
+                return true;
+            }
+        }
+
+        if (Boolean.toString(student.isOnContract()).contains(searchText)) {
+            return true;
+        }
+
+        if (Double.toString(student.getAvarage()).contains(searchText)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
 
 //    public static void main(String[] args) {
 //        ArrayList<Integer> grades = new ArrayList<Integer>();

@@ -6,19 +6,24 @@ import cz.uhk.system.fileModule.CSVManager;
 import cz.uhk.system.fileModule.FileManager;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainWindow extends JFrame {
     private StudentList students = new StudentList();
+    private StudentList originalStudents = new StudentList();
     private StudentTableModel model = new StudentTableModel();
     private JTable table;
     private JButton btDelete = new JButton();
-    private JButton btInsert = new JButton("Insert Student");
+    private JButton btAdd = new JButton("Add");
     private JButton btSort = new JButton("Sort");
     private JButton btSearch = new JButton("Search");
+    private JButton btShowTable = new JButton("Show Table");
     private JButton btReadFromFile = new JButton("Read from File");
     private JButton btWriteToFile = new JButton("Write to File");
     private JTextField tfName;
@@ -44,21 +49,14 @@ public class MainWindow extends JFrame {
     }
 
     private void createRightPanel() {
-        JPanel southPanel = new JPanel();
-        southPanel.setLayout(new BorderLayout());
-//        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        southPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//delete bt
-        btDelete = new JButton("Delete Student");
-        btDelete.addActionListener((e) ->
-                model.deleteStudent(table.getSelectedRow()));
+        JPanel rightPanel = new JPanel();
+//        rightPanel.setMaximumSize(new Dimension(50, 640));
+        rightPanel.setLayout(new BorderLayout());
 
-        southPanel.add(btDelete);
-// delete bt
-//        JPanel formPanel = new JPanel();
-        JPanel formPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+
+        // Insert student fields
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 3, 1));
         formPanel.setBorder(BorderFactory.createTitledBorder("New student"));
-//        formPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         formPanel.add(new JLabel("Name"));
         tfName = new JTextField(15);
         formPanel.add(tfName);
@@ -70,21 +68,81 @@ public class MainWindow extends JFrame {
         onContractCheckBox = new JCheckBox("On Contract");
         formPanel.add(onContractCheckBox);
 
-//        southPanel.add(new JLabel("On Contract"));
-//        tfCena = new JTextField("0", 10);
-//        southPanel.add(tfCena);
-
         JButton btAdd = new JButton("Add");
-        formPanel.add(btAdd, BorderLayout.SOUTH);
-        btAdd.addActionListener((e) -> {
-            addStudent();
+        formPanel.add(btAdd);
+        btAdd.addActionListener((e) -> addStudent());
+
+        rightPanel.add(formPanel, BorderLayout.NORTH);
+
+        // Search field
+        JPanel searchPanel = new JPanel(new FlowLayout());
+        searchPanel.setBorder(BorderFactory.createTitledBorder("Search"));
+        tfSearch = new JTextField(15);
+
+        // Add DocumentListener to the search field
+        tfSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (tfSearch.getText().isEmpty()) {
+                    showTable(); // Call showTable when the search field is cleared
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
         });
 
-        southPanel.add(formPanel, BorderLayout.NORTH);
-        add(southPanel, BorderLayout.EAST);
+        // search button
+        searchPanel.add(tfSearch);
+        searchPanel.add(btSearch);
+        btSearch.addActionListener((e) -> {
+            String searchText = tfSearch.getText();
+            searchStudents(searchText);
+        });
+
+        rightPanel.add(searchPanel, FlowLayout.CENTER);
+
+        // Button panel
+        JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+        buttonPanel.setBorder(BorderFactory.createTitledBorder("Actions"));
+
+//        JButton btSort = new JButton("Sort");
+        buttonPanel.add(btSort);
+
+
+//        JButton btReadFromFile = new JButton("Read from File");
+        buttonPanel.add(btReadFromFile);
+
+//        JButton btWriteToFile = new JButton("Write to File");
+        buttonPanel.add(btWriteToFile);
+
+        rightPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        add(rightPanel, BorderLayout.EAST);
+    }
+    private void searchStudents(String searchText) {
+        List<Student> searchResults = students.search(searchText);
+
+        if (searchResults.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No students found.",
+                    "Search Results", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            model.setStudents(new StudentList(searchResults));
+            JOptionPane.showMessageDialog(this,
+                    "Found " + searchResults.size() + " student(s).", "Search Results",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    private void showTable() {
+        model.setStudents(originalStudents); // Reset the table to display all students
+
 
     }
-
 
 
     private void addStudent() {
@@ -112,7 +170,8 @@ public class MainWindow extends JFrame {
     public void initData() {
         FileManager fileManager = new CSVManager();
         try {
-            students = fileManager.read("students/1.csv");
+            originalStudents = fileManager.read("students/1.csv");
+            students = originalStudents;
             model.setStudents(students);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Failed to read student data from file.",
