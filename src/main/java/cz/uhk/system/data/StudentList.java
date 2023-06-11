@@ -49,21 +49,16 @@ public class StudentList {
         if(!isSorted){
             sort();
         }
-
     }
     public int countScholarshipStCount(int scholarshipPercent){
         return this.size* scholarshipPercent /100;
     }
 
     public float getMinGrade(){
-        if(scholarshipStCount > 0){
-            return studentList.get(scholarshipStCount - 1).getAvarage();
+        if(scholarshipStCount < 1){
+            createRating(40);
         }
-        else {
-            System.out.println("The rating is not created.\n" +
-                    "Please first create rating to get minimum grade for scholarship");
-            return 0;
-        }
+        return studentList.get(scholarshipStCount - 1).getAvarage();
     }
     public void add(Student student){
         this.studentList.add(student);

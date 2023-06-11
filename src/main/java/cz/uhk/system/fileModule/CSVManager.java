@@ -9,47 +9,14 @@ import java.util.List;
 
 public class CSVManager implements FileManager{
     //create student not in CSV Manager!!
-    private Student createStudent(List<String> data) {
-        if (data.get(0).isEmpty() || data.get(0).trim().isEmpty()) {
-            String msg = "The first record in a table row (here: " + data.get(0) +
-                    ") should be the name of a student, not an empty string.";
-            throw new IllegalArgumentException(msg);
-        }
 
-        int contractValueInd = data.size() - 1;
-        int gradesCount = contractValueInd - 1;
-
-        ArrayList<Integer> gradesList = new ArrayList<>();
-        boolean isOnContract;
-
-        for (int i = 1; i < gradesCount + 1; i++) {
-            try {
-                int grade = Integer.parseInt(data.get(i));
-                gradesList.add(grade);
-            } catch (NumberFormatException e) {
-                String msg = "Error when transforming file content to float number at column " + i;
-                throw new RuntimeException(msg, e);
-            }
-        }
-
-        String contractValue = data.get(contractValueInd);
-
-        if (contractValue.equalsIgnoreCase("FALSE")) {
-            isOnContract = false;
-        } else if (contractValue.equalsIgnoreCase("TRUE")) {
-            isOnContract = true;
-        } else {
-            throw new IllegalArgumentException("The last value in a file row should be either TRUE or FALSE");
-        }
-
-        return new Student(data.get(0), gradesList, isOnContract);
-    }
 
     @Override
     public StudentList read(String fname) throws IOException {
         StudentList result = new StudentList();
 
         try (BufferedReader br = new BufferedReader(new FileReader(fname))) {
+            Student st = new Student();
             String line = br.readLine();
             int initialCount = Integer.parseInt(line);
             int count = 0;
@@ -65,7 +32,7 @@ public class CSVManager implements FileManager{
                     record.add(word);
                 }
 
-                result.add(createStudent(record));
+                result.add(new Student(record));
             }
 
             if (count != initialCount) {

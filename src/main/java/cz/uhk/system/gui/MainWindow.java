@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,13 +20,8 @@ public class MainWindow extends JFrame {
     private StudentList originalStudents = new StudentList();
     private StudentTableModel model = new StudentTableModel();
     private JTable table;
-    private JButton btDelete = new JButton("Delete");
-    private JButton btAdd = new JButton("Add");
-    private JButton btSort = new JButton("Sort");
-    private JButton btSearch = new JButton("Search");
-    private JButton btShowTable = new JButton("Show Table");
-    private JButton btReadFromFile = new JButton("Read from File");
-    private JButton btWriteToFile = new JButton("Write to File");
+    private JPanel rightPanel;
+
     private JTextField tfName;
     private JTextField tfGrades;
     private JCheckBox inEnglishCheckBox;
@@ -49,66 +45,28 @@ public class MainWindow extends JFrame {
     }
 
     private void createRightPanel() {
-        JPanel rightPanel = new JPanel();
-//        rightPanel.setMaximumSize(new Dimension(50, 640));
+        rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
+        rightPanel.setPreferredSize(new Dimension(300, rightPanel.getPreferredSize().height));
 
+        createAddStudent();
+        createSearchPanel();
+        createActionPanel();
 
-// Insert student fields -> mb this to popup window
-        JPanel formPanel = new JPanel(new GridLayout(4, 2, 3, 1));
-        formPanel.setBorder(BorderFactory.createTitledBorder("New student"));
-        formPanel.add(new JLabel("Name"));
-        tfName = new JTextField(15);
-        formPanel.add(tfName);
+        add(rightPanel, BorderLayout.EAST);
+    }
 
-        formPanel.add(new JLabel("Grades"));
-        tfGrades = new JTextField("1, 2, 3", 10);
-        formPanel.add(tfGrades);
-
-        inEnglishCheckBox = new JCheckBox("In English");
-        formPanel.add(inEnglishCheckBox);
-
-        formPanel.add(btAdd);
-        btAdd.addActionListener((e) -> addStudent());
-
-        rightPanel.add(formPanel, BorderLayout.NORTH);
-
-// Search field
-        JPanel searchPanel = new JPanel(new FlowLayout());
-        searchPanel.setBorder(BorderFactory.createTitledBorder("Search"));
-        tfSearch = new JTextField(15);
-
-    // Add DocumentListener to the search field
-        tfSearch.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                if (tfSearch.getText().isEmpty()) {
-                    showTable(); // Call showTable when the search field is cleared
-                }
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-            }
-        });
-
-    // search panel
-        searchPanel.add(tfSearch);
-        searchPanel.add(btSearch);
-        btSearch.addActionListener((e) -> {
-            String searchText = tfSearch.getText();
-            searchStudents(searchText);
-        });
-
-        rightPanel.add(searchPanel, FlowLayout.CENTER);
-// Button panel
-        JPanel buttonPanel = new JPanel(new GridLayout(4, 1, 10, 10));
+    private void createActionPanel() {
+        // Button panel
+        JPanel buttonPanel = new JPanel(new GridLayout(5, 1, 20, 30));
         buttonPanel.setBorder(BorderFactory.createTitledBorder("Actions"));
+        buttonPanel.setPreferredSize(new Dimension(rightPanel.getWidth(), 100));
 
+        JButton btDelete = new JButton("Delete");
+        JButton btSort = new JButton("Sort");
+        JButton btReadFromFile = new JButton("Read from File");
+        JButton btWriteToFile = new JButton("Write to File");
+        JButton btWriteRating = new JButton("Write rating");
 // sort
         buttonPanel.add(btDelete);
         btDelete.addActionListener((e)->
@@ -134,8 +92,6 @@ public class MainWindow extends JFrame {
             }
         });
 
-
-
 // write to file
         buttonPanel.add(btWriteToFile);
         btWriteToFile.addActionListener((e) -> {
@@ -150,17 +106,96 @@ public class MainWindow extends JFrame {
             }
         });
 
-        rightPanel.add(buttonPanel, BorderLayout.SOUTH);
+        // write to file
+        buttonPanel.add(btWriteRating);
+        btWriteRating.addActionListener((e) -> {
+            String fileName = JOptionPane.showInputDialog(this,
+                                        "Enter the file name to write rating:");
+            if (fileName != null && !fileName.isEmpty()) {
+                try {
+                    writeRating(fileName);
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Failed to write to file: " + fileName,
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
-        add(rightPanel, BorderLayout.EAST);
+        rightPanel.add(buttonPanel, BorderLayout.CENTER);
     }
+
+    private void createSearchPanel() {
+        //Search field
+        JPanel searchPanel = new JPanel(new FlowLayout());
+        searchPanel.setBorder(BorderFactory.createTitledBorder("Search"));
+        JButton btSearch = new JButton("Search");
+        tfSearch = new JTextField(15);
+
+        // Add DocumentListener to the search field
+        tfSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (tfSearch.getText().isEmpty()) {
+                    showTable(); // Call showTable when the search field is cleared
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+
+        // search panel
+        searchPanel.add(tfSearch);
+        searchPanel.add(btSearch);
+        btSearch.addActionListener((e) -> {
+            String searchText = tfSearch.getText();
+            searchStudents(searchText);
+        });
+
+        rightPanel.add(searchPanel, BorderLayout.SOUTH);
+    }
+
+    private void createAddStudent() {
+        // Insert student fields -> mb this to popup window
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 3, 1));
+        formPanel.setBorder(BorderFactory.createTitledBorder("New student"));
+        JButton btAdd = new JButton("Add");
+        formPanel.add(new JLabel("Name"));
+        tfName = new JTextField(15);
+        formPanel.add(tfName);
+
+        formPanel.add(new JLabel("Grades"));
+        tfGrades = new JTextField("1, 2, 3", 10);
+        formPanel.add(tfGrades);
+
+        inEnglishCheckBox = new JCheckBox("In English");
+        formPanel.add(inEnglishCheckBox);
+
+        formPanel.add(btAdd);
+        btAdd.addActionListener((e) -> addStudent());
+
+        rightPanel.add(formPanel, BorderLayout.NORTH);
+
+    }
+
     private void writeFile(String fileName) throws IOException {
         FileManager fileManager = new CSVManager();
         fileManager.write(fileName, students);
         JOptionPane.showMessageDialog(this, "File successfully written: " + fileName,
                 "Write File", JOptionPane.INFORMATION_MESSAGE);
     }
-// read file mwthod
+    private void writeRating(String fileName) throws IOException{
+        students.createRating(40);
+        FileManager fileManager = new CSVManager();
+        ((CSVManager) fileManager).writeRating(fileName, students);
+        JOptionPane.showMessageDialog(this, "File successfully written: " + fileName,
+                "Write File", JOptionPane.INFORMATION_MESSAGE);
+    }
     private void readFile(String fileName) throws IOException {
         FileManager fileManager = new CSVManager();
         StudentList newStudents = fileManager.read(fileName);
