@@ -98,7 +98,7 @@ public class CSVManager implements FileManager{
 
                 writer.write(st.getName() + ","
                         + gradesString // GRADES are written in []
-                        + st.isOnContract());
+                        + st.isInEnglish());
                 writer.newLine();
             }
         } catch (IOException e) {

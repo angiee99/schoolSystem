@@ -28,7 +28,7 @@ public class MainWindow extends JFrame {
     private JButton btWriteToFile = new JButton("Write to File");
     private JTextField tfName;
     private JTextField tfGrades;
-    private JCheckBox onContractCheckBox;
+    private JCheckBox inEnglishCheckBox;
     private JTextField tfSearch;
 
 
@@ -65,8 +65,8 @@ public class MainWindow extends JFrame {
         tfGrades = new JTextField("1, 2, 3", 10);
         formPanel.add(tfGrades);
 
-        onContractCheckBox = new JCheckBox("On Contract");
-        formPanel.add(onContractCheckBox);
+        inEnglishCheckBox = new JCheckBox("In English");
+        formPanel.add(inEnglishCheckBox);
 
         formPanel.add(btAdd);
         btAdd.addActionListener((e) -> addStudent());
@@ -194,7 +194,7 @@ public class MainWindow extends JFrame {
     private void addStudent() {
 
         String gradesText = tfGrades.getText();
-        boolean onContract = onContractCheckBox.isSelected();
+        boolean inEnglish = inEnglishCheckBox.isSelected();
         // Convert gradesText to ArrayList<Integer>
         ArrayList<Integer> grades = new ArrayList<>();
         String[] gradesArray = gradesText.split(",");
@@ -202,14 +202,14 @@ public class MainWindow extends JFrame {
             grades.add(Integer.parseInt(grade.trim()));
         }
 
-        Student st = new Student(tfName.getText(), grades,onContract);
+        Student st = new Student(tfName.getText(), grades,inEnglish);
         students.add(st);
         model.fireTableDataChanged();
 
         // Clear text fields
         tfName.setText("");
         tfGrades.setText("");
-        onContractCheckBox.setSelected(false);
+        inEnglishCheckBox.setSelected(false);
 
     }
 
@@ -227,7 +227,7 @@ public class MainWindow extends JFrame {
 
     private class StudentTableModel extends AbstractTableModel {
 //        private List<Student> students;
-        private String[] columnNames = {"Name", "Grades", "On Contract", "Average"};
+        private String[] columnNames = {"Name", "Grades", "In English", "Average"};
 
         public void setStudents(StudentList studentList) {
            students = studentList;
@@ -242,7 +242,7 @@ public class MainWindow extends JFrame {
                 s.setGrades((ArrayList<Integer>) aValue);
                 fireTableCellUpdated(rowIndex,3);
             } else if (columnIndex == 2) {
-                s.setOnContract((Boolean) aValue);
+                s.setInEnglish((Boolean) aValue);
             }
         }
 
@@ -279,7 +279,7 @@ public class MainWindow extends JFrame {
                 case 1:
                     return student.getGrades();
                 case 2:
-                    return student.isOnContract();
+                    return student.isInEnglish();
                 case 3:
                     return student.getAvarage();
                 default:

@@ -5,23 +5,23 @@ import java.util.ArrayList;
 public class Student {
     private String name;
     private ArrayList<Integer> grades;
-    private boolean onContract;
+    private boolean inEnglish;
     private float avarage;
     static private int studentCount;
 
     public Student(){
         studentCount+=1;
     }
-    public Student(String name, ArrayList<Integer> grades, boolean onContract) {
+    public Student(String name, ArrayList<Integer> grades, boolean inEnglish) {
         this.name = name;
         this.grades = grades;
-        this.onContract = onContract;
+        this.inEnglish = inEnglish;
         studentCount+=1;
     }
     public Student(Student another) {
         this.name = another.name;
         this.grades = another.grades;
-        this.onContract = another.onContract;
+        this.inEnglish = another.inEnglish;
         this.avarage = another.avarage;
         studentCount += 1;
     }
@@ -41,12 +41,12 @@ public class Student {
         this.grades = grades;
     }
 
-    public boolean isOnContract() {
-        return onContract;
+    public boolean isInEnglish() {
+        return inEnglish;
     }
 
-    public void setOnContract(boolean onContract) {
-        this.onContract = onContract;
+    public void setInEnglish(boolean inEnglish) {
+        this.inEnglish = inEnglish;
     }
 
     public float getAvarage() {
@@ -67,16 +67,4 @@ public class Student {
     public static int getStudentCount() {
         return studentCount;
     }
-
-
-//    public static void main(String[] args) {
-//        System.out.println("hey");
-//        ArrayList<Integer> grades = new ArrayList<Integer>();
-//        grades.add(1); grades.add(2); grades.add(3);
-//        Student st1 = new Student("angie", grades, false);
-//        Student st2 = new Student(st1);
-//        System.out.println(st2.getName());
-//        System.out.println(st1.getAvarage());
-//        System.out.println(Student.getStudentCount());
-//    }
 }

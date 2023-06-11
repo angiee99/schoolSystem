@@ -5,21 +5,21 @@ public class StudentList {
     private List<Student> studentList  = new ArrayList<>();
     private int size;
     private boolean isSorted;
-    private int budgetStCount;
+    private int englishStCount;
     private int scholarshipStCount;
 
     public StudentList(){
         this.size = 0;
         this.isSorted = false;
-        this.budgetStCount = 0;
+        this.englishStCount = 0;
         this.scholarshipStCount = 0;
     }
     public StudentList(List<Student> students){
         this.studentList = students;
         for (Student student: students
              ) {
-            if(!student.isOnContract()){
-                this.budgetStCount++;
+            if(!student.isInEnglish()){
+                this.englishStCount++;
             }
         }
 
@@ -28,10 +28,6 @@ public class StudentList {
         this.scholarshipStCount = 0;
     }
 
-
-//    public void setStudentList(List<Student> studentList) {
-//        this.studentList = studentList;
-//    }
     public void sort(){
         if(!isSorted){
             for (int i = 0; i < size; i++){
@@ -56,7 +52,7 @@ public class StudentList {
 
     }
     public int countScholarshipStCount(int scholarshipPercent){
-        return this.budgetStCount * scholarshipPercent /100;
+        return this.size* scholarshipPercent /100;
     }
 
     public float getMinGrade(){
@@ -73,22 +69,22 @@ public class StudentList {
         this.studentList.add(student);
         this.size++;
         this.isSorted = false;
-        if(!student.isOnContract()){
-            this.budgetStCount++;
+        if(!student.isInEnglish()){
+            this.englishStCount++;
         }
     }
     public void remove(Student student){
         //remove by student object
         this.studentList.remove(student);
         this.size--;
-        if(!student.isOnContract()){
-            this.budgetStCount--;
+        if(!student.isInEnglish()){
+            this.englishStCount--;
         }
     }
     public void remove(int index){
         //remove student by index
-        if(!studentList.get(index).isOnContract()){
-            this.budgetStCount--;
+        if(!studentList.get(index).isInEnglish()){
+            this.englishStCount--;
         }
         this.studentList.remove(index);
         this.size--;
@@ -112,8 +108,8 @@ public class StudentList {
         return size;
     }
 
-    public int getBudgetStCount() {
-        return budgetStCount;
+    public int getEnglishStCount() {
+        return englishStCount;
     }
 
     public int getScholarshipStCount() {
@@ -153,7 +149,7 @@ public class StudentList {
             }
         }
 
-        if (Boolean.toString(student.isOnContract()).contains(searchText)) {
+        if (Boolean.toString(student.isInEnglish()).contains(searchText)) {
             return true;
         }
 
