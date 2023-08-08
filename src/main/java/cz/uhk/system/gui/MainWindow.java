@@ -28,7 +28,6 @@ public class MainWindow extends JFrame {
     private JTextField tfSearch;
 
 
-
     public MainWindow() {
         super("School System");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -223,14 +222,14 @@ public class MainWindow extends JFrame {
         }
     }
     private void showTable() {
-        model.setStudents(originalStudents); // Reset the table to display all students
+        model.setStudents(originalStudents); // resets the table to display all students
     }
 
     private void addStudent() {
 
         String gradesText = tfGrades.getText();
         boolean inEnglish = inEnglishCheckBox.isSelected();
-        // Convert gradesText to ArrayList<Integer>
+        // gradesText to ArrayList<Integer>
         ArrayList<Integer> grades = new ArrayList<>();
         String[] gradesArray = gradesText.split(",");
         for (String grade : gradesArray) {
@@ -241,7 +240,7 @@ public class MainWindow extends JFrame {
         students.add(st);
         model.fireTableDataChanged();
 
-        // Clear text fields
+        // clear text fields
         tfName.setText("");
         tfGrades.setText("");
         inEnglishCheckBox.setSelected(false);
@@ -255,13 +254,12 @@ public class MainWindow extends JFrame {
             students = originalStudents;
             model.setStudents(students);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Failed to read student data from file.",
+            JOptionPane.showMessageDialog(this, "Failed to read student from file.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private class StudentTableModel extends AbstractTableModel {
-//        private List<Student> students;
         private String[] columnNames = {"Name", "Grades", "In English", "Average"};
 
         public void setStudents(StudentList studentList) {
