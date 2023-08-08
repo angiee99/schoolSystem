@@ -8,15 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVManager implements FileManager{
-    //create student not in CSV Manager!!
-
-
     @Override
     public StudentList read(String fname) throws IOException {
         StudentList result = new StudentList();
 
         try (BufferedReader br = new BufferedReader(new FileReader(fname))) {
-            Student st = new Student();
             String line = br.readLine();
             int initialCount = Integer.parseInt(line);
             int count = 0;
@@ -38,11 +34,11 @@ public class CSVManager implements FileManager{
             if (count != initialCount) {
                 String msg = "The count of students written at the beginning of file " + initialCount +
                         " does not match the real count of records in the file " + count;
-                throw new IllegalArgumentException(msg);
+                throw new  IOException(msg);
             }
         } catch (IOException e) {
             String msg = "Failed to open input file: " + fname;
-            throw new RuntimeException(msg, e);
+            throw new  IOException(msg);
         }
 
         return result;

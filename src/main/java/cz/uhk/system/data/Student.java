@@ -37,6 +37,7 @@ public class Student {
                 gradesList.add(grade);
             } catch (NumberFormatException e) {
                 String msg = "Error when transforming file content to float number at column " + i;
+                // is NOT caught?
                 throw new RuntimeException(msg, e);
             }
         }
@@ -48,6 +49,7 @@ public class Student {
         } else if (contractValue.equalsIgnoreCase("TRUE")) {
             inEnglish = true;
         } else {
+            // is NOT caught?
             throw new IllegalArgumentException("The last value in a file row should be either TRUE or FALSE");
         }
 

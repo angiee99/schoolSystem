@@ -176,7 +176,7 @@ public class MainWindow extends JFrame {
         formPanel.add(inEnglishCheckBox);
 
         formPanel.add(btAdd);
-        btAdd.addActionListener((e) -> addStudent());
+        btAdd.addActionListener((e) -> addStudent()); //mb here CATCH
 
         rightPanel.add(formPanel, BorderLayout.NORTH);
 
@@ -236,15 +236,26 @@ public class MainWindow extends JFrame {
             grades.add(Integer.parseInt(grade.trim()));
         }
 
-        Student st = new Student(tfName.getText(), grades,inEnglish);
-        students.add(st);
-        model.fireTableDataChanged();
+        try {
+            Student st = new Student(tfName.getText(), grades, inEnglish);
 
-        // clear text fields
-        tfName.setText("");
-        tfGrades.setText("");
-        inEnglishCheckBox.setSelected(false);
+            students.add(st);
+            model.fireTableDataChanged();
 
+            // clear text fields
+            tfName.setText("");
+            tfGrades.setText("");
+            inEnglishCheckBox.setSelected(false);
+        }
+        //???
+        catch (IllegalArgumentException ex){
+            JOptionPane.showMessageDialog(this, "Failed to create a student" + ex,
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (RuntimeException ex){
+            JOptionPane.showMessageDialog(this, "Failed to create a student" + ex,
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void initData() {
